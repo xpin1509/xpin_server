@@ -22,7 +22,16 @@ module.exports = appInfo => {
   const userConfig = {
     // myAppName: 'egg',
   };
-
+  config.security = {
+    csrf: {
+      enable: false
+    }
+  }
+  // config.cors = {
+  //   origin: ctx => ctx.get('origin'),
+  //   allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+  //   credentials: true
+  // }
   return {
     ...config,
     ...userConfig,
