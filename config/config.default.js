@@ -29,7 +29,7 @@ module.exports = appInfo => {
   }
   config.cors = {
     origin: ctx => ctx.get('origin'),
-    allowMethods: 'GET,HEAD,PUT,POST',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
     credentials: true
   }
   return {
