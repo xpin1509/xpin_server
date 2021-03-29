@@ -1,6 +1,6 @@
 module.exports = {
   schedule: {
-    interval: '1h', // 1 分钟间隔
+    interval: '24h', // 1 分钟间隔
     type: "all" // 指定所有的worker（进程）都需要执行
   },
   async task(ctx) {
