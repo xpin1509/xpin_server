@@ -6,6 +6,7 @@ module.exports = {
   async task(ctx) {
     try {
       const res = await ctx.service.sendSentryMsgService.doSend()
+      
       console.log(res)
     } catch (e) {
       console.log(e)

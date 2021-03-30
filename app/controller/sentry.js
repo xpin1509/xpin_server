@@ -5,10 +5,13 @@ const Controller = require('egg').Controller;
 class Sentryio extends Controller {
   async getData() {
     const { ctx } = this
+    
     try {
+        const res = await ctx.service.sendSentryMsgService.doSend()
+
         ctx.body = {
             status: 200,
-            data: 'hello'
+            data: JSON.stringify(res)
         }
     } catch (e) {
         ctx.body = {

@@ -1,6 +1,6 @@
 const Service = require('egg').Service
-const URL = 'https://oapi.dingtalk.com/robot/send?access_token=37cd51e9f1f37f2674216bc73d47aa600ec8fe28330b5624dc8c275419820ced'
-const SECRET = 'SECeb093d27575d74b9b04b82fb8a1052f054b570858edf5fd7c12e905cd07a2aeb'
+const UserEmailToPhone = require('../constant/userMap')
+const DINGDING_CONFIG = require('../constant/dingdingConfig')
 
 class sendSentryMsgService extends Service {
     async doSend () {
@@ -8,19 +8,29 @@ class sendSentryMsgService extends Service {
         try {
             const list = await ctx.service.sentryIssuesService.getIssuesList()
             
+            const owners = []
             // markDown
             const msgItem = list.map((el,index) => {
+                if (el.assignedTo && el.assignedTo.email && UserEmailToPhone[el.assignedTo.email]) {
+                    owners.push('@' + UserEmailToPhone[el.assignedTo.email])
+                }
                 return `${index + 1}. ${el.title} \n [${el.culprit}](${el.permalink})`
             })
+            // 去重
+            const uniqeOwn = [...new Set(owners)]
+            
             const Template =  {
                 "msgtype": "markdown",
                 "markdown": {
-                    "title": "线上异常",
-                    "text": msgItem.join(' \n')
+                    "title": "线上异常助手",
+                    "text": msgItem.join('\n') + uniqeOwn.join('')
+                },
+                "at": {
+                    "atMobiles": uniqeOwn,
                 }
             }
 
-            const res = await ctx.service.dingdingMsgService.sendMsg(URL, SECRET, Template)
+            const res = await ctx.service.dingdingMsgService.sendMsg(DINGDING_CONFIG.ACCESS_TOKEN, DINGDING_CONFIG.SECRET, Template)
             
             return res
         } catch (e) {
