@@ -22,7 +22,7 @@ class sendSentryMsgService extends Service {
             const Template =  {
                 "msgtype": "markdown",
                 "markdown": {
-                    "title": "线上异常助手",
+                    "title": DINGDING_CONFIG.KEY_WORD,
                     "text": msgItem.join('\n') + uniqeOwn.join('')
                 },
                 "at": {
